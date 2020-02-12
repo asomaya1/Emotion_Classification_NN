@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 23 14:33:05 2020
+
+@author: arjun
+"""
+import scipy.io as scio
+import numpy as np
+
+dataset = scio.loadmat('real_final_features.mat')
+labels = dataset["labels"]
+int_labels = np.zeros((1,107560))
+for i in range(len(labels)):
+    if labels[i] == "Neutral ":
+        int_labels[:,i] = int(0)
+    if labels[i] == "Angry   ":
+        int_labels[:,i] = int(1)
+    if labels[i] == "Happy   ":
+        int_labels[:,i] = int(2)
+    if labels[i] == "Sad     ":
+        int_labels[:,i] = int(3)
+    if labels[i] == "Fearful ":
+        int_labels[:,i] = int(4)
+    if labels[i] == "Monotone":
+        int_labels[:,i] = int(5)
+
+int_labels = int_labels.astype(int)
+features = dataset["features"]
+features = np.transpose(features)
+int_labels = np.transpose(int_labels)
+scio.savemat('/home/arjun/.config/spyder-py3/numerical_features.mat', {"features": features, "labels": int_labels})
